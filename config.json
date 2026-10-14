@@ -1,0 +1,12 @@
+
+{
+  "parent_folder": "C:\\Users\\Admin\\Downloads\\JDownloader",
+  "cbz_output_in_parent": true,
+  "output_folder": "D:\\Manga_CBZ",
+  "output_image_format": "JPG",
+  "output_image_quality": 92,
+  "package_format": "ZIP",
+  "delete_original_after_success": false,
+  "rar_executable": "",
+  "seven_zip_executable": ""
+}
