@@ -1,76 +1,76 @@
-# Manga Image Converter and Package Creator
+# PixPack
 
-A lightweight Python utility for converting manga page images and packaging each manga subfolder into a selected archive format.
+**A lightweight batch image converter and archive packer for Windows.**
 
-## Features
+Convert images into your preferred format, organize them by folder, and package entire directories into ZIP, CBZ, RAR, or 7Z archives using a simple configuration file.
 
-- Process every immediate subfolder inside a configured source directory.
-- Convert supported images to JPEG, PNG, WEBP, BMP, or TIFF.
-- Create ZIP, CBZ, RAR, or 7Z packages.
-- Assign sequential page names inside each package.
-- Verify package integrity before publishing the final output.
-- Optionally delete a source manga folder after successful package creation and verification.
-- Configure source paths, output paths, image format, image quality, and package format in `config.json`.
+## ✨ Features
 
-## Requirements
+- **Batch image conversion** — Convert multiple images recursively across folders.
+- **Multiple image formats** — Configure the target format and image quality.
+- **Archive creation** — Package folders into ZIP, CBZ, RAR, or 7Z files.
+- **Flexible output paths** — Choose where converted images and archives are saved.
+- **Configurable workflow** — Control behavior through `config.json` without editing source code.
+- **Optional cleanup** — Configure whether original files are deleted after successful processing.
+- **Lightweight dependencies** — Uses Python and Pillow for image processing.
 
-- Windows 10 or Windows 11
-- Python 3.10 or later
-- Pillow
-- WinRAR or a RAR command-line executable for RAR output
-- 7-Zip for 7Z output
+## 📦 Supported Formats
 
-ZIP and CBZ creation use Python's standard library and do not require external archive software.
+### Image conversion
 
-## Project Structure
+The available output formats depend on the formats supported by Pillow. Common choices include:
 
-```text
-MangaCBZ/
-├── main.py
-├── config.json
-├── requirements.txt
-├── README.md
-└── src/
-    ├── __init__.py
-    └── manga_cbz/
-        ├── __init__.py
-        ├── image_converter.py
-        └── package_creator.py
+- JPEG / JPG
+- PNG
+- WebP
+- BMP
+- TIFF
+
+### Archive packaging
+
+| Format | Requirements |
+|---|---|
+| ZIP | Built-in Python support |
+| CBZ | Built-in Python support; ZIP-compatible archive |
+| RAR | WinRAR or a compatible RAR command-line executable |
+| 7Z | 7-Zip command-line executable |
+
+External archive tools must be installed and configured for RAR and 7Z output.
+
+## 🚀 Getting Started
+
+### 1. Requirements
+
+- Windows
+- Python 3.10 or later recommended
+- Git (optional)
+
+Check your Python installation:
+
+```powershell
+py --version
 ```
 
-## Installation
+### 2. Clone the repository
 
-Open Command Prompt in the project directory.
+```powershell
+git clone https://github.com/YOUR_USERNAME/pixpack.git
+cd pixpack
+```
 
-Install the dependencies:
+Replace `YOUR_USERNAME` with your GitHub username.
 
-```bat
+Alternatively, download the repository as a ZIP file and extract it.
+
+### 3. Install dependencies
+
+```powershell
 py -m pip install -r requirements.txt
 ```
 
-If the `py` command is unavailable, try:
+### 4. Configure the application
 
-```bat
-python -m pip install -r requirements.txt
-```
-
-If neither command works, install Python from the official Python website and enable the option to add Python to PATH during installation.
-
-## Configuration
-
-Edit `config.json` before running the program.
-
-| Setting | Description |
-|---|---|
-| `parent_folder` | Root folder containing manga subfolders |
-| `cbz_output_in_parent` | `true` saves packages in the source root; `false` uses `output_folder` |
-| `output_folder` | Separate destination directory for packages |
-| `output_image_format` | Converted image format |
-| `output_image_quality` | Quality from 1 to 100 for JPEG and WEBP |
-| `package_format` | Package type: `ZIP`, `CBZ`, `RAR`, or `7Z` |
-| `delete_original_after_success` | Deletes the complete source manga folder after successful packaging and verification |
-| `rar_executable` | Optional full path to `rar.exe` or `WinRAR.exe` |
-| `seven_zip_executable` | Optional full path to `7z.exe` or `7zz.exe` |
+Edit `config.json` to set your input directory, output directory, image format, and archive format.
 
 Example:
 
@@ -88,116 +88,78 @@ Example:
 }
 ```
 
-### Package Formats
-
-- `ZIP`: Creates standard `.zip` files.
-- `CBZ`: Creates ZIP-compatible `.cbz` files commonly used by comic readers.
-- `RAR`: Requires WinRAR or a compatible RAR command-line executable.
-- `7Z`: Requires 7-Zip.
-
-External archive utilities must be installed separately for RAR and 7Z. If automatic detection fails, set the appropriate executable path in `config.json`.
-
-Not every comic reader supports every image format. For broad compatibility, JPEG images inside CBZ packages are a safe default. WEBP and TIFF support depends on the reader.
-
-## Source Folder Example
-
-```text
-D:\Manga\
-├── Manga One\
-│   ├── 001.png
-│   ├── 002.png
-│   └── 003.png
-├── Manga Two\
-│   ├── 001.jpg
-│   └── 002.jpg
-└── Manga Three\
-    └── chapter1\
-        ├── 001.png
-        └── 002.png
-```
-
-Each immediate subfolder is processed independently. Image files are discovered recursively, including images in nested subfolders.
-
-## Output Example
-
-With `package_format` set to `CBZ` and `output_folder` set to `D:\\Manga_Packages`:
-
-```text
-D:\Manga_Packages\
-├── Manga One.cbz
-├── Manga Two.cbz
-└── Manga Three.cbz
-```
-
-Changing `package_format` to `ZIP`, `RAR`, or `7Z` changes the output extension and archive creation method.
-
-Pages inside each archive receive sequential names, such as:
-
-```text
-000001.webp
-000002.webp
-000003.webp
-```
-
-## Run
+### 5. Run PixPack
 
 From the project root:
 
-```bat
+```powershell
 py main.py
 ```
 
-The program prints progress and reports any folder that fails to process.
+## ⚙️ Configuration
 
-## Source Deletion Warning
+| Setting | Description |
+|---|---|
+| `parent_folder` | Root directory containing the folders to process |
+| `cbz_output_in_parent` | Controls whether CBZ output is placed in the parent directory |
+| `output_folder` | Destination directory for archive output when applicable |
+| `output_image_format` | Target image format, such as `WEBP`, `JPEG`, or `PNG` |
+| `output_image_quality` | Image quality setting for formats that support it |
+| `package_format` | Archive format: `ZIP`, `CBZ`, `RAR`, or `7Z` |
+| `delete_original_after_success` | Whether original files may be deleted after successful processing |
+| `rar_executable` | Path to the RAR command-line executable |
+| `seven_zip_executable` | Path to the 7-Zip command-line executable |
 
-By default, `delete_original_after_success` is `false`.
+**Important:** Back up important files before enabling automatic deletion. Test the workflow with a small sample directory first.
 
-When enabled, the program deletes the entire source manga folder only after the package has been created and its integrity check has passed. This includes original images, converted images, and nested files.
+Use escaped backslashes (`\\`) in Windows paths inside JSON strings.
 
-Keep this option disabled until you have verified your output packages and backups.
+## 📁 Project Structure
 
-If a package with the expected name already exists, that manga folder is skipped. The program does not automatically replace an existing package.
-
-## Troubleshooting
-
-### `pip` is not recognized
-
-Use:
-
-```bat
-py -m pip install -r requirements.txt
+```text
+pixpack/
+├── main.py
+├── config.json
+├── requirements.txt
+├── README.md
+└── src/
+    ├── __init__.py
+    └── image_batch_tool/
+        ├── __init__.py
+        ├── image_converter.py
+        └── package_creator.py
 ```
 
-If Python is installed but pip is missing, try:
+## 🛠️ Dependencies
 
-```bat
-py -m ensurepip --upgrade
-py -m pip install -r requirements.txt
-```
+- [Python](https://www.python.org/)
+- [Pillow](https://python-pillow.org/) — Image loading, processing, and conversion
+- [7-Zip](https://www.7-zip.org/) — Required for 7Z packaging
+- [WinRAR](https://www.win-rar.com/) — Required for RAR packaging
 
-### RAR executable not found
+Only Pillow is listed as a Python dependency. External archive utilities are optional and are needed only for their respective archive formats.
 
-Install WinRAR or configure the full executable path in `rar_executable`.
+## 🔒 Safety Notes
 
-### 7-Zip executable not found
+- Keep `delete_original_after_success` set to `false` until you have verified the results.
+- Use a test directory before processing large collections.
+- Ensure the configured external executable paths are correct when using RAR or 7Z.
+- Avoid committing private paths or other sensitive local configuration to a public repository.
 
-Install 7-Zip or configure the full executable path in `seven_zip_executable`.
+## 🗺️ Roadmap
 
-### No pages found
+Potential future improvements:
 
-Check `output_image_format`. The package creator searches for images matching the configured output format. Also check whether image conversion completed successfully.
+- [ ] Desktop graphical interface
+- [ ] Processing progress and detailed logs
+- [ ] Additional image-processing options
+- [ ] Improved error recovery and reporting
+- [ ] Build a standalone Windows executable
 
-### Package already exists
+## 🤝 Contributing
 
-The program skips folders whose output package already exists. Move or rename the existing package if you want to process that folder again.
+Contributions, bug reports, and feature suggestions are welcome. Please include steps to reproduce issues and relevant error messages when reporting bugs.
 
-### Package fails verification
+## 📄 License
 
-The program removes its temporary archive when packaging fails. The source folder is retained by the processing routine unless it was successfully packaged and verified.
-
-## Dependencies
-
-The Python dependency list is maintained in `requirements.txt`.
-
-External archive utilities are required only when using RAR or 7Z output.
+No license has been specified yet. Add a `LICENSE` file before distributing the project or accepting contributions under a particular license.
